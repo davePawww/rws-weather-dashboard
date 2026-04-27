@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'motion/react';
 import { useState } from 'react';
 
 import {
@@ -27,7 +28,12 @@ export function CitySearch() {
   });
 
   return (
-    <div className="flex items-center gap-2 md:justify-center">
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="flex items-center gap-2 md:justify-center"
+    >
       <Label htmlFor="city-search">Search for a City:</Label>
       <Combobox
         items={data || []}
@@ -62,6 +68,6 @@ export function CitySearch() {
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
-    </div>
+    </motion.div>
   );
 }
