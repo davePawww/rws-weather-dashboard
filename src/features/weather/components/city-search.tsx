@@ -43,7 +43,14 @@ export function CitySearch() {
           <ComboboxEmpty>No cities found.</ComboboxEmpty>
           <ComboboxList>
             {(item: City) => (
-              <ComboboxItem key={item.id} value={item.id}>
+              <ComboboxItem
+                key={item.id}
+                value={
+                  item.name +
+                  (item.admin1 ? `, ${item.admin1}` : '') +
+                  (item.country ? `, ${item.country}` : '')
+                }
+              >
                 {item.name +
                   (item.admin1 ? `, ${item.admin1}` : '') +
                   (item.country ? `, ${item.country}` : '')}
