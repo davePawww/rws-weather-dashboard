@@ -60,16 +60,7 @@ describe('CitySearch', () => {
         admin1: 'State of Berlin',
         latitude: 52.52,
         longitude: 13.41,
-        elevation: 74,
-        feature_code: 'PPLC',
-        country_code: 'DE',
-        admin1_id: 1,
-        admin3_id: 2,
-        admin4_id: 3,
         timezone: 'Europe/Berlin',
-        population: 3426354,
-        postcodes: [],
-        country_id: 4,
       },
     ]);
 
