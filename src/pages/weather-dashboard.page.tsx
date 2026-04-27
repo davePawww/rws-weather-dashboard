@@ -1,5 +1,10 @@
-import { CitySearch } from '@/features/weather';
+import { CitySearch, CurrentWeather } from '@/features/weather';
 
 export default function WeatherDashboardPage() {
-  return <CitySearch />;
+  return (
+    <>
+      <CitySearch />
+      <CurrentWeather />
+    </>
+  );
 }

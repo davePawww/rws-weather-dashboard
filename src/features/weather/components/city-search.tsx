@@ -10,6 +10,7 @@ import {
   ComboboxList,
 } from '@/components/ui/combobox';
 import { Label } from '@/components/ui/label';
+import { useGeoCodingStore } from '@/features/weather/geocoding.store';
 import { fetchCities } from '@/features/weather/weather.api';
 import type { City } from '@/features/weather/weather.types';
 import { useDebounce } from '@/hooks/use-debounce';
@@ -17,6 +18,7 @@ import { useDebounce } from '@/hooks/use-debounce';
 export function CitySearch() {
   const [inputValue, setInputValue] = useState('');
   const debouncedInputValue = useDebounce(inputValue, 500);
+  const setSelectedCity = useGeoCodingStore((state) => state.setSelectedCity);
 
   const { data } = useQuery({
     queryKey: ['cities', debouncedInputValue],
@@ -44,6 +46,7 @@ export function CitySearch() {
           <ComboboxList>
             {(item: City) => (
               <ComboboxItem
+                onClick={() => setSelectedCity(item)}
                 key={item.id}
                 value={
                   item.name +
