@@ -33,7 +33,12 @@ export function CitySearch() {
         onInputValueChange={setInputValue}
         filter={() => true}
       >
-        <ComboboxInput className="flex-1" showClear />
+        <ComboboxInput
+          id="city-search"
+          aria-label="Search for a city"
+          className="flex-1"
+          showClear
+        />
         <ComboboxContent>
           <ComboboxEmpty>No cities found.</ComboboxEmpty>
           <ComboboxList>
