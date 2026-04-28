@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { CurrentWeather } from '@/features/weather/components/current-weather';
-import { useGeoCodingStore } from '@/features/weather/geocoding.store';
+import { useGeocodingStore } from '@/features/weather/geocoding.store';
 import type { City, WeatherDataResponse } from '@/features/weather/weather.types';
 
 const mockCity: City = {
@@ -42,7 +42,7 @@ const meta = {
   args: {},
   decorators: [
     (Story) => {
-      useGeoCodingStore.setState({ selectedCity: mockCity });
+      useGeocodingStore.setState({ selectedCity: mockCity });
 
       const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
       queryClient.setQueryData(

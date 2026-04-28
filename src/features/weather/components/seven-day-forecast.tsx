@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { Card, CardContent, CardDescription } from '@/components/ui/card';
-import { useGeoCodingStore } from '@/features/weather/geocoding.store';
+import { useGeocodingStore } from '@/features/weather/geocoding.store';
 import { fetchSevenDayForecast } from '@/features/weather/weather.api';
 import { getWeatherInfo, transformDateStringToDay } from '@/features/weather/weather.util';
 
 export function SevenDayForecast() {
-  const selectedCity = useGeoCodingStore((state) => state.selectedCity);
-  const selectedUnit = useGeoCodingStore((state) => state.selectedUnit);
+  const selectedCity = useGeocodingStore((state) => state.selectedCity);
+  const selectedUnit = useGeocodingStore((state) => state.selectedUnit);
 
   const { data, isLoading } = useQuery({
     queryKey: [

@@ -13,7 +13,7 @@ import {
   ComboboxList,
 } from '@/components/ui/combobox';
 import { Label } from '@/components/ui/label';
-import { useGeoCodingStore } from '@/features/weather/geocoding.store';
+import { useGeocodingStore } from '@/features/weather/geocoding.store';
 import { fetchCities } from '@/features/weather/weather.api';
 import type { City } from '@/features/weather/weather.types';
 import { useDebounce } from '@/hooks/use-debounce';
@@ -21,15 +21,19 @@ import { useDebounce } from '@/hooks/use-debounce';
 export function CitySearch() {
   const [inputValue, setInputValue] = useState('');
   const debouncedInputValue = useDebounce(inputValue, 500);
-  const setSelectedCity = useGeoCodingStore((state) => state.setSelectedCity);
-  const selectedUnit = useGeoCodingStore((state) => state.selectedUnit);
-  const setSelectedUnit = useGeoCodingStore((state) => state.setSelectedUnit);
+  const setSelectedCity = useGeocodingStore((state) => state.setSelectedCity);
+  const selectedUnit = useGeocodingStore((state) => state.selectedUnit);
+  const setSelectedUnit = useGeocodingStore((state) => state.setSelectedUnit);
+  const recentSearches = useGeocodingStore((state) => state.recentSearches);
+  const addRecentSearch = useGeocodingStore((state) => state.addRecentSearch);
 
   const { data } = useQuery({
     queryKey: ['cities', debouncedInputValue],
     queryFn: () => fetchCities(debouncedInputValue),
     enabled: !!debouncedInputValue,
   });
+
+  const cachedCities = inputValue ? data || [] : recentSearches;
 
   return (
     <motion.div
@@ -40,7 +44,7 @@ export function CitySearch() {
     >
       <Label htmlFor="city-search">Search for a City:</Label>
       <Combobox
-        items={data || []}
+        items={cachedCities}
         inputValue={inputValue}
         onInputValueChange={setInputValue}
         filter={() => true}
@@ -52,11 +56,14 @@ export function CitySearch() {
           showClear
         />
         <ComboboxContent>
-          <ComboboxEmpty>No cities found.</ComboboxEmpty>
+          <ComboboxEmpty>{inputValue ? 'No cities found.' : 'No recent searches.'}</ComboboxEmpty>
           <ComboboxList>
             {(item: City) => (
               <ComboboxItem
-                onClick={() => setSelectedCity(item)}
+                onClick={() => {
+                  setSelectedCity(item);
+                  addRecentSearch(item);
+                }}
                 key={item.id}
                 value={
                   item.name +
