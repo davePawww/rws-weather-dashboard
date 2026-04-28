@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CurrentWeather } from '@/features/weather/components/current-weather';
 import { useGeoCodingStore } from '@/features/weather/geocoding.store';
 import { fetchCurrentWeather } from '@/features/weather/weather.api';
-import type { City, WeatherDataResponse } from '@/features/weather/weather.types';
+import type { City, WeatherDataResponse, WeatherUnit } from '@/features/weather/weather.types';
 
 // Replaces fetchCurrentWeather with a spy function that we can control per tests
 vi.mock('@/features/weather/weather.api');
@@ -76,10 +76,10 @@ function renderWithProviders(ui: React.ReactElement) {
 // returning whatever selectedCity we want for a given test.
 // ------------------------------------------------------------------
 
-function mockStore(selectedCity: City | null) {
+function mockStore(selectedCity: City | null, selectedUnit: WeatherUnit = 'celsius') {
   vi.mocked(useGeoCodingStore).mockImplementation(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call
-    (selector: any) => selector({ selectedCity, setSelectedCity: vi.fn() }),
+    (selector: any) => selector({ selectedCity, setSelectedCity: vi.fn(), selectedUnit }),
   );
 }
 
@@ -186,7 +186,11 @@ describe('CurrentWeather', () => {
     renderWithProviders(<CurrentWeather />);
 
     await waitFor(() => {
-      expect(fetchCurrentWeather).toHaveBeenCalledWith(mockCity.latitude, mockCity.longitude);
+      expect(fetchCurrentWeather).toHaveBeenCalledWith(
+        mockCity.latitude,
+        mockCity.longitude,
+        'celsius',
+      );
     });
   });
 });

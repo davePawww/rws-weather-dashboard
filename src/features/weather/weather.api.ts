@@ -3,6 +3,7 @@ import type {
   GeocodingResponse,
   SevenDayForecastResponse,
   WeatherDataResponse,
+  WeatherUnit,
 } from '@/features/weather/weather.types';
 
 export const fetchCities = async (query: string): Promise<City[]> => {
@@ -21,9 +22,10 @@ export const fetchCities = async (query: string): Promise<City[]> => {
 export const fetchCurrentWeather = async (
   latitude: number,
   longitude: number,
+  selectedUnit: WeatherUnit,
 ): Promise<WeatherDataResponse> => {
   const response = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m&past_days=0&forecast_days=7`,
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m&past_days=0&forecast_days=7&temperature_unit=${selectedUnit}`,
   );
 
   if (!response.ok) {
@@ -37,9 +39,10 @@ export const fetchCurrentWeather = async (
 export const fetchSevenDayForecast = async (
   latitude: number,
   longitude: number,
+  selectedUnit: WeatherUnit,
 ): Promise<SevenDayForecastResponse> => {
   const response = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,weather_code&forecast_days=7`,
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,weather_code&forecast_days=7&temperature_unit=${selectedUnit}`,
   );
 
   if (!response.ok) {

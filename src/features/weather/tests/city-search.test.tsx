@@ -92,4 +92,23 @@ describe('CitySearch', () => {
       expect(screen.getByText('No cities found.')).toBeInTheDocument();
     });
   });
+
+  it('toggles temperature unit when buttons are clicked', () => {
+    renderWithProviders(<CitySearch />);
+
+    const celsiusButton = screen.getByRole('button', { name: 'Celsius' });
+    const fahrenheitButton = screen.getByRole('button', { name: 'Fahrenheit' });
+
+    // Default should be Celsius
+    expect(celsiusButton).toHaveAttribute('data-variant', 'default');
+    expect(fahrenheitButton).toHaveAttribute('data-variant', 'secondary');
+
+    fireEvent.click(fahrenheitButton);
+    expect(celsiusButton).toHaveAttribute('data-variant', 'secondary');
+    expect(fahrenheitButton).toHaveAttribute('data-variant', 'default');
+
+    fireEvent.click(celsiusButton);
+    expect(celsiusButton).toHaveAttribute('data-variant', 'default');
+    expect(fahrenheitButton).toHaveAttribute('data-variant', 'secondary');
+  });
 });

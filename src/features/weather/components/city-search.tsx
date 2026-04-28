@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { ButtonGroup, ButtonGroupSeparator } from '@/components/ui/button-group';
 import {
   Combobox,
   ComboboxContent,
@@ -20,6 +22,8 @@ export function CitySearch() {
   const [inputValue, setInputValue] = useState('');
   const debouncedInputValue = useDebounce(inputValue, 500);
   const setSelectedCity = useGeoCodingStore((state) => state.setSelectedCity);
+  const selectedUnit = useGeoCodingStore((state) => state.selectedUnit);
+  const setSelectedUnit = useGeoCodingStore((state) => state.setSelectedUnit);
 
   const { data } = useQuery({
     queryKey: ['cities', debouncedInputValue],
@@ -68,6 +72,23 @@ export function CitySearch() {
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
+      <ButtonGroup>
+        <Button
+          variant={selectedUnit === 'celsius' ? 'default' : 'secondary'}
+          size="sm"
+          onClick={() => setSelectedUnit('celsius')}
+        >
+          Celsius
+        </Button>
+        <ButtonGroupSeparator />
+        <Button
+          variant={selectedUnit === 'fahrenheit' ? 'default' : 'secondary'}
+          size="sm"
+          onClick={() => setSelectedUnit('fahrenheit')}
+        >
+          Fahrenheit
+        </Button>
+      </ButtonGroup>
     </motion.div>
   );
 }

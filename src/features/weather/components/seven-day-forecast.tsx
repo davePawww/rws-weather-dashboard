@@ -8,6 +8,7 @@ import { getWeatherInfo, transformDateStringToDay } from '@/features/weather/wea
 
 export function SevenDayForecast() {
   const selectedCity = useGeoCodingStore((state) => state.selectedCity);
+  const selectedUnit = useGeoCodingStore((state) => state.selectedUnit);
 
   const { data, isLoading } = useQuery({
     queryKey: [
@@ -15,8 +16,10 @@ export function SevenDayForecast() {
       selectedCity?.id,
       selectedCity?.latitude,
       selectedCity?.longitude,
+      selectedUnit,
     ],
-    queryFn: () => fetchSevenDayForecast(selectedCity!.latitude, selectedCity!.longitude),
+    queryFn: () =>
+      fetchSevenDayForecast(selectedCity!.latitude, selectedCity!.longitude, selectedUnit),
     enabled: !!selectedCity,
   });
 
