@@ -62,37 +62,53 @@ export function CurrentWeather() {
                 </motion.p>
               ) : (
                 <motion.div
-                  className="md:grid md:grid-cols-4"
+                  className="grid grid-cols-2 gap-4 md:grid md:grid-cols-4"
                   initial="hidden"
                   animate="visible"
                   transition={{ staggerChildren: 0.1 }}
                 >
-                  <motion.p variants={weatherItemVariants} transition={{ duration: 0.3 }}>
-                    Temperature: {data?.current.temperature_2m}
-                    {data?.current_units.temperature_2m}
-                  </motion.p>
+                  <Card>
+                    <CardContent>
+                      <motion.p variants={weatherItemVariants} transition={{ duration: 0.3 }}>
+                        Temperature: {data?.current.temperature_2m}
+                        {data?.current_units.temperature_2m}
+                      </motion.p>
+                    </CardContent>
+                  </Card>
                   {data?.current.weather_code !== undefined &&
                     (() => {
                       const { label, icon: Icon } = getWeatherInfo(data.current.weather_code);
                       return (
-                        <motion.p
-                          variants={weatherItemVariants}
-                          transition={{ duration: 0.3 }}
-                          className="flex items-center gap-1"
-                        >
-                          <Icon className="size-4" />
-                          {label}
-                        </motion.p>
+                        <Card>
+                          <CardContent>
+                            <motion.p
+                              variants={weatherItemVariants}
+                              transition={{ duration: 0.3 }}
+                              className="flex items-center gap-1"
+                            >
+                              <Icon className="size-4" />
+                              {label}
+                            </motion.p>
+                          </CardContent>
+                        </Card>
                       );
                     })()}
-                  <motion.p variants={weatherItemVariants} transition={{ duration: 0.3 }}>
-                    Humidity: {data?.current.relative_humidity_2m}
-                    {data?.current_units.relative_humidity_2m}
-                  </motion.p>
-                  <motion.p variants={weatherItemVariants} transition={{ duration: 0.3 }}>
-                    Wind Speed: {data?.current.wind_speed_10m}
-                    {data?.current_units.wind_speed_10m}
-                  </motion.p>
+                  <Card>
+                    <CardContent>
+                      <motion.p variants={weatherItemVariants} transition={{ duration: 0.3 }}>
+                        Humidity: {data?.current.relative_humidity_2m}
+                        {data?.current_units.relative_humidity_2m}
+                      </motion.p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent>
+                      <motion.p variants={weatherItemVariants} transition={{ duration: 0.3 }}>
+                        Wind Speed: {data?.current.wind_speed_10m}
+                        {data?.current_units.wind_speed_10m}
+                      </motion.p>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               )}
             </CardContent>
