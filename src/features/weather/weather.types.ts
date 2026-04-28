@@ -22,8 +22,10 @@ export type WeatherUnit = 'celsius' | 'fahrenheit';
 export type GeoCodingStore = {
   selectedCity: City | null;
   selectedUnit: WeatherUnit;
+  recentSearches: City[];
   setSelectedCity: (city: City) => void;
   setSelectedUnit: (unit: WeatherUnit) => void;
+  addRecentSearch: (city: City) => void;
 };
 
 export type WeatherDataResponse = {

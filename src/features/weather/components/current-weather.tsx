@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useGeoCodingStore } from '@/features/weather/geocoding.store';
+import { useGeocodingStore } from '@/features/weather/geocoding.store';
 import { fetchCurrentWeather } from '@/features/weather/weather.api';
 import { getWeatherInfo } from '@/features/weather/weather.util';
 
@@ -12,8 +12,8 @@ const weatherItemVariants = {
 };
 
 export function CurrentWeather() {
-  const selectedCity = useGeoCodingStore((state) => state.selectedCity);
-  const selectedUnit = useGeoCodingStore((state) => state.selectedUnit);
+  const selectedCity = useGeocodingStore((state) => state.selectedCity);
+  const selectedUnit = useGeocodingStore((state) => state.selectedUnit);
 
   const { data, isLoading } = useQuery({
     queryKey: [
