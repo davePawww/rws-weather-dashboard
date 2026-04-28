@@ -40,45 +40,48 @@ export function CitySearch() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="flex items-center gap-2 md:justify-center"
+      className="flex flex-col items-center gap-4 md:flex-row"
     >
-      <Label htmlFor="city-search">Search for a City:</Label>
-      <Combobox
-        items={cachedCities}
-        inputValue={inputValue}
-        onInputValueChange={setInputValue}
-        filter={() => true}
-      >
-        <ComboboxInput
-          id="city-search"
-          aria-label="Search for a city"
-          className="flex-1"
-          showClear
-        />
-        <ComboboxContent>
-          <ComboboxEmpty>{inputValue ? 'No cities found.' : 'No recent searches.'}</ComboboxEmpty>
-          <ComboboxList>
-            {(item: City) => (
-              <ComboboxItem
-                onClick={() => {
-                  setSelectedCity(item);
-                  addRecentSearch(item);
-                }}
-                key={item.id}
-                value={
-                  item.name +
-                  (item.admin1 ? `, ${item.admin1}` : '') +
-                  (item.country ? `, ${item.country}` : '')
-                }
-              >
-                {item.name +
-                  (item.admin1 ? `, ${item.admin1}` : '') +
-                  (item.country ? `, ${item.country}` : '')}
-              </ComboboxItem>
-            )}
-          </ComboboxList>
-        </ComboboxContent>
-      </Combobox>
+      <div className="flex w-full items-center gap-2 md:justify-center">
+        <Label htmlFor="city-search">Search for a City:</Label>
+        <Combobox
+          items={cachedCities}
+          inputValue={inputValue}
+          onInputValueChange={setInputValue}
+          filter={() => true}
+        >
+          <ComboboxInput
+            id="city-search"
+            aria-label="Search for a city"
+            className="flex-1"
+            showClear
+          />
+          <ComboboxContent>
+            <ComboboxEmpty>{inputValue ? 'No cities found.' : 'No recent searches.'}</ComboboxEmpty>
+            <ComboboxList>
+              {(item: City) => (
+                <ComboboxItem
+                  onClick={() => {
+                    setSelectedCity(item);
+                    addRecentSearch(item);
+                  }}
+                  key={item.id}
+                  value={
+                    item.name +
+                    (item.admin1 ? `, ${item.admin1}` : '') +
+                    (item.country ? `, ${item.country}` : '')
+                  }
+                >
+                  {item.name +
+                    (item.admin1 ? `, ${item.admin1}` : '') +
+                    (item.country ? `, ${item.country}` : '')}
+                </ComboboxItem>
+              )}
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
+      </div>
+
       <ButtonGroup>
         <Button
           variant={selectedUnit === 'celsius' ? 'default' : 'secondary'}

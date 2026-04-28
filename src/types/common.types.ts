@@ -18,3 +18,20 @@ export type AvatarIconProps = {
   link: string;
   icon: JSX.Element;
 };
+
+export type GeolocationState = {
+  latitude: number | null;
+  longitude: number | null;
+  isLoading: boolean;
+  error: GeolocationPositionError | null;
+};
+
+export type NominatimReverseResponse = {
+  address: {
+    city?: string;
+    town?: string;
+    village?: string;
+    state?: string;
+    country_code?: string;
+  };
+};
