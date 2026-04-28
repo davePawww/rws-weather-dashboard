@@ -5,6 +5,7 @@ import type {
   WeatherDataResponse,
   WeatherUnit,
 } from '@/features/weather/weather.types';
+import type { NominatimReverseResponse } from '@/types/common.types';
 
 export const fetchCities = async (query: string): Promise<City[]> => {
   const response = await fetch(
@@ -51,4 +52,26 @@ export const fetchSevenDayForecast = async (
 
   const data = (await response.json()) as SevenDayForecastResponse;
   return data;
+};
+
+export const fetchCityByCoordinates = async (
+  latitude: number,
+  longitude: number,
+): Promise<City> => {
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+  );
+
+  if (!response.ok) throw new Error('Failed to reverse geocode coordinates');
+
+  const data = (await response.json()) as NominatimReverseResponse;
+  return {
+    id: Date.now(),
+    name: data.address.city ?? data.address.town ?? data.address.village ?? 'My Location',
+    latitude,
+    longitude,
+    timezone: '',
+    country: data.address.country_code?.toUpperCase() ?? '',
+    admin1: data.address.state,
+  };
 };
