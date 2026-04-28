@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SevenDayForecast } from '@/features/weather/components/seven-day-forecast';
 import { useGeoCodingStore } from '@/features/weather/geocoding.store';
 import { fetchSevenDayForecast } from '@/features/weather/weather.api';
-import type { City, SevenDayForecastResponse } from '@/features/weather/weather.types';
+import type { City, SevenDayForecastResponse, WeatherUnit } from '@/features/weather/weather.types';
 
 // Replaces fetchSevenDayForecast with a spy function that we can control per tests
 vi.mock('@/features/weather/weather.api');
@@ -58,12 +58,12 @@ function renderWithProviders(ui: React.ReactElement) {
   return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
 }
 
-function mockStore(selectedCity: City | null) {
+function mockStore(selectedCity: City | null, selectedUnit: WeatherUnit = 'celsius') {
   // This intercepts calls to useGeoCodingStore and runs the selector against our fake state
   // object, returning whatever selectedCity we want for our tests.
   vi.mocked(useGeoCodingStore).mockImplementation(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call
-    (selector: any) => selector({ selectedCity, setSelectedCity: vi.fn() }),
+    (selector: any) => selector({ selectedCity, setSelectedCity: vi.fn(), selectedUnit }),
   );
 }
 
@@ -114,7 +114,11 @@ describe('SevenDayForecast', () => {
     renderWithProviders(<SevenDayForecast />);
 
     await waitFor(() => {
-      expect(fetchSevenDayForecast).toHaveBeenCalledWith(mockCity.latitude, mockCity.longitude);
+      expect(fetchSevenDayForecast).toHaveBeenCalledWith(
+        mockCity.latitude,
+        mockCity.longitude,
+        'celsius',
+      );
     });
   });
 });

@@ -13,10 +13,18 @@ const weatherItemVariants = {
 
 export function CurrentWeather() {
   const selectedCity = useGeoCodingStore((state) => state.selectedCity);
+  const selectedUnit = useGeoCodingStore((state) => state.selectedUnit);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['currentWeather', selectedCity?.id, selectedCity?.latitude, selectedCity?.longitude],
-    queryFn: () => fetchCurrentWeather(selectedCity!.latitude, selectedCity!.longitude),
+    queryKey: [
+      'currentWeather',
+      selectedCity?.id,
+      selectedCity?.latitude,
+      selectedCity?.longitude,
+      selectedUnit,
+    ],
+    queryFn: () =>
+      fetchCurrentWeather(selectedCity!.latitude, selectedCity!.longitude, selectedUnit),
     enabled: !!selectedCity,
   });
 
