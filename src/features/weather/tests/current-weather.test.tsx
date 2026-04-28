@@ -3,7 +3,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { CurrentWeather } from '@/features/weather/components/current-weather';
-import { useGeoCodingStore } from '@/features/weather/geocoding.store';
+import { useGeocodingStore } from '@/features/weather/geocoding.store';
 import { fetchCurrentWeather } from '@/features/weather/weather.api';
 import type { City, WeatherDataResponse, WeatherUnit } from '@/features/weather/weather.types';
 
@@ -77,7 +77,7 @@ function renderWithProviders(ui: React.ReactElement) {
 // ------------------------------------------------------------------
 
 function mockStore(selectedCity: City | null, selectedUnit: WeatherUnit = 'celsius') {
-  vi.mocked(useGeoCodingStore).mockImplementation(
+  vi.mocked(useGeocodingStore).mockImplementation(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call
     (selector: any) => selector({ selectedCity, setSelectedCity: vi.fn(), selectedUnit }),
   );

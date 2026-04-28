@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CitySearch } from '@/features/weather/components/city-search';
+import { useGeocodingStore } from '@/features/weather/geocoding.store';
 import { fetchCities } from '@/features/weather/weather.api';
 
 vi.mock('@/features/weather/weather.api');
@@ -22,6 +23,9 @@ function renderWithProviders(ui: React.ReactElement) {
 describe('CitySearch', () => {
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
+    // resets zustand store and localStorage before each test to avoid state leaking between tests.
+    useGeocodingStore.setState({ recentSearches: [], selectedCity: null, selectedUnit: 'celsius' });
+    localStorage.clear();
   });
 
   afterEach(() => {
@@ -110,5 +114,116 @@ describe('CitySearch', () => {
     fireEvent.click(celsiusButton);
     expect(celsiusButton).toHaveAttribute('data-variant', 'default');
     expect(fahrenheitButton).toHaveAttribute('data-variant', 'secondary');
+  });
+
+  it('shows "No recent searches." when input is empty and there are no recent searches', async () => {
+    const { container } = renderWithProviders(<CitySearch />);
+
+    fireEvent.click(within(container).getByRole('button', { name: 'Toggle Suggestions' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('No recent searches.')).toBeInTheDocument();
+    });
+  });
+
+  it('shows recent searches when input is empty', async () => {
+    useGeocodingStore.setState({
+      recentSearches: [
+        {
+          id: 1,
+          name: 'Berlin',
+          country: 'Germany',
+          admin1: 'State of Berlin',
+          latitude: 52.52,
+          longitude: 13.41,
+          timezone: 'Europe/Berlin',
+        },
+        {
+          id: 2,
+          name: 'Paris',
+          country: 'France',
+          admin1: 'Île-de-France',
+          latitude: 48.85,
+          longitude: 2.35,
+          timezone: 'Europe/Paris',
+        },
+      ],
+    });
+
+    const { container } = renderWithProviders(<CitySearch />);
+    fireEvent.click(within(container).getByRole('button', { name: 'Toggle Suggestions' }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Berlin, State of Berlin, Germany')).toBeInTheDocument();
+      expect(screen.getByText('Paris, Île-de-France, France')).toBeInTheDocument();
+    });
+  });
+
+  it('adds a selected city to recent searches', async () => {
+    vi.mocked(fetchCities).mockResolvedValue([
+      {
+        id: 1,
+        name: 'Berlin',
+        country: 'Germany',
+        admin1: 'State of Berlin',
+        latitude: 52.52,
+        longitude: 13.41,
+        timezone: 'Europe/Berlin',
+      },
+    ]);
+
+    const { container } = renderWithProviders(<CitySearch />);
+
+    fireEvent.input(within(container).getByRole('combobox'), {
+      target: { value: 'Berlin' },
+      inputType: 'insertText',
+    });
+    vi.advanceTimersByTime(500);
+
+    await waitFor(() => screen.getByText('Berlin, State of Berlin, Germany'));
+    fireEvent.click(screen.getByText('Berlin, State of Berlin, Germany'));
+
+    expect(useGeocodingStore.getState().recentSearches[0].name).toBe('Berlin');
+  });
+
+  it('shows API results when typing, not recent searches', async () => {
+    useGeocodingStore.setState({
+      recentSearches: [
+        {
+          id: 99,
+          name: 'Tokyo',
+          country: 'Japan',
+          admin1: '',
+          latitude: 35.68,
+          longitude: 139.69,
+          timezone: 'Asia/Tokyo',
+        },
+      ],
+    });
+
+    vi.mocked(fetchCities).mockResolvedValue([
+      {
+        id: 1,
+        name: 'Berlin',
+        country: 'Germany',
+        admin1: 'State of Berlin',
+        latitude: 52.52,
+        longitude: 13.41,
+        timezone: 'Europe/Berlin',
+      },
+    ]);
+
+    const { container } = renderWithProviders(<CitySearch />);
+
+    fireEvent.input(within(container).getByRole('combobox'), {
+      target: { value: 'Berlin' },
+      inputType: 'insertText',
+    });
+    vi.advanceTimersByTime(500);
+
+    await waitFor(() => {
+      expect(screen.getByText('Berlin, State of Berlin, Germany')).toBeInTheDocument();
+      expect(screen.queryByText('Tokyo, Japan')).not.toBeInTheDocument();
+    });
   });
 });
