@@ -44,3 +44,21 @@ export type WeatherInfo = {
   label: string;
   icon: LucideIcon;
 };
+
+export type SevenDayForecastResponse = {
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  daily_units: {
+    temperature_2m_max: string;
+    temperature_2m_min: string;
+    weather_code: string;
+  };
+  daily: {
+    time: string[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    weather_code: number[];
+  };
+};
