@@ -68,3 +68,18 @@ export type SevenDayForecastResponse = {
     weather_code: number[];
   };
 };
+
+export type HourlyForecastResponse = {
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  hourly_units: {
+    temperature_2m: string;
+  };
+  hourly: {
+    time: string[];
+    temperature_2m: number[];
+    weather_code: number[];
+  };
+};

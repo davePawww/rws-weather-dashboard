@@ -1,6 +1,7 @@
 import type {
   City,
   GeocodingResponse,
+  HourlyForecastResponse,
   SevenDayForecastResponse,
   WeatherDataResponse,
   WeatherUnit,
@@ -74,4 +75,21 @@ export const fetchCityByCoordinates = async (
     country: data.address.country_code?.toUpperCase() ?? '',
     admin1: data.address.state,
   };
+};
+
+export const fetchHourlyForecast = async (
+  latitude: number,
+  longitude: number,
+  selectedUnit: WeatherUnit,
+): Promise<HourlyForecastResponse> => {
+  const response = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,weather_code&timezone=auto&past_days=0&forecast_days=1&temperature_unit=${selectedUnit}`,
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch hourly forecast');
+  }
+
+  const data = (await response.json()) as HourlyForecastResponse;
+  return data;
 };

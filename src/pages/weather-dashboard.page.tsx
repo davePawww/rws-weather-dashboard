@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { CitySearch, CurrentWeather, SevenDayForecast } from '@/features/weather';
+import { CitySearch, CurrentWeather, HourlyForecast, SevenDayForecast } from '@/features/weather';
 import { useGeocodingStore } from '@/features/weather/geocoding.store';
 import { fetchCityByCoordinates } from '@/features/weather/weather.api';
 import { useGeolocation } from '@/hooks/use-geolocation';
@@ -26,6 +26,7 @@ export default function WeatherDashboardPage() {
       <CitySearch />
       <CurrentWeather />
       <SevenDayForecast />
+      <HourlyForecast />
     </>
   );
 }
