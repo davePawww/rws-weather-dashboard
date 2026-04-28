@@ -1,6 +1,7 @@
 import type {
   City,
   GeocodingResponse,
+  SevenDayForecastResponse,
   WeatherDataResponse,
 } from '@/features/weather/weather.types';
 
@@ -30,5 +31,21 @@ export const fetchCurrentWeather = async (
   }
 
   const data = (await response.json()) as WeatherDataResponse;
+  return data;
+};
+
+export const fetchSevenDayForecast = async (
+  latitude: number,
+  longitude: number,
+): Promise<SevenDayForecastResponse> => {
+  const response = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,weather_code&forecast_days=7`,
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch seven day forecast');
+  }
+
+  const data = (await response.json()) as SevenDayForecastResponse;
   return data;
 };

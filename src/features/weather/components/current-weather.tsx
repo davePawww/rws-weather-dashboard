@@ -21,7 +21,7 @@ export function CurrentWeather() {
   });
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {selectedCity && (
         <motion.div
           key={selectedCity.id}
@@ -29,8 +29,10 @@ export function CurrentWeather() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="mt-4"
         >
-          <Card className="mt-4 w-full">
+          <h4 className="font-semibold">Current Weather</h4>
+          <Card className="mt-2 w-full">
             <CardHeader>
               <CardTitle>
                 {selectedCity?.name +

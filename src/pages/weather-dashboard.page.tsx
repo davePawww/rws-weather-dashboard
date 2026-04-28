@@ -1,10 +1,11 @@
-import { CitySearch, CurrentWeather } from '@/features/weather';
+import { CitySearch, CurrentWeather, SevenDayForecast } from '@/features/weather';
 
 export default function WeatherDashboardPage() {
   return (
     <>
       <CitySearch />
       <CurrentWeather />
+      <SevenDayForecast />
     </>
   );
 }

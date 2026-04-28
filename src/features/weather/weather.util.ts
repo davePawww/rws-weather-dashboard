@@ -47,3 +47,8 @@ export const getWeatherInfo = (code: number): WeatherInfo => {
 
   return { label: 'Unknown', icon: Cloud };
 };
+
+export const transformDateStringToDay = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { weekday: 'long' });
+};
