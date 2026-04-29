@@ -37,7 +37,7 @@ export function HourlyForecast() {
           <h4 className="font-semibold">Hourly Forecast</h4>
           <Card className="mt-2">
             <CardContent className="no-scrollbar overflow-x-auto">
-              <div className="flex w-max gap-2 py-px">
+              <div className="flex w-max gap-2 py-px" role="list">
                 {data?.hourly.time.map((time: string, index: number) => {
                   const { icon: WeatherIcon, label } = getWeatherInfo(
                     data.hourly.weather_code[index],
@@ -50,11 +50,19 @@ export function HourlyForecast() {
                   const unit = data.hourly_units.temperature_2m;
 
                   return (
-                    <Card key={index} className="w-20 shrink-0">
+                    <Card
+                      key={index}
+                      className="w-20 shrink-0"
+                      role="listitem"
+                      tabIndex={0}
+                      aria-label={`${hour}: ${label}, ${temp}${unit}`}
+                    >
                       <CardContent className="flex flex-col items-center justify-center gap-1 p-3 text-center">
-                        <span className="text-muted-foreground text-xs">{hour}</span>
-                        <WeatherIcon className="h-6 w-6" aria-label={label} />
-                        <span className="text-sm font-semibold">
+                        <span className="text-muted-foreground text-xs" aria-hidden="true">
+                          {hour}
+                        </span>
+                        <WeatherIcon className="h-6 w-6" role="img" aria-label={label} />
+                        <span className="text-sm font-semibold" aria-hidden="true">
                           {temp}
                           {unit}
                         </span>
