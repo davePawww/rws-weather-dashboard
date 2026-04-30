@@ -10,7 +10,7 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-6xl flex-col overflow-hidden p-4">
-      <Header title="02-weather-dashboard" projectLink="https://www.x.com" />
+      <Header title="02-weather-dashboard" projectLink="https://github.com/davePawww/rws-weather-dashboard" />
       <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
