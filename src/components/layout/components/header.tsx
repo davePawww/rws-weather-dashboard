@@ -15,7 +15,7 @@ export default function Header({ title, projectLink }: HeaderProps) {
     <motion.header
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: 'easeIn' }}
+      transition={{ duration: 0.8, ease: 'easeIn' }}
       className="flex flex-col items-center justify-between gap-1.5 md:flex-row md:gap-0"
     >
       <h1 className="font-semibold">{title}</h1>
